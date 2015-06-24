@@ -8,7 +8,7 @@ Meteor.methods({
    * @param  {Obect} tracking - An object containing tracking variables
    * @return {Object}  The initial visit record
    */
-  logVisit: function (tracking) {
+  logVisit: function (tracking, visitorId) {
     var h, r, visit, ip, geo, id;
 
     // Get the headers from the method request
@@ -28,6 +28,7 @@ Meteor.methods({
 
       // Build the visit record object
       visit = {
+        visitorId : visitorId,
         referer: h.referer,
         ipAddress: ip,
         userAgent:  {

@@ -37,15 +37,18 @@ Meteor.startup(function() {
         sid: VisitTracker.options.defaultSource
       };
     }
-    Meteor.call('logVisit', tracking, function(err, res) {
-      //console.log(res);
+      //console.log("VisitorID", Visitor.id());
+    var visitorId = Visitor.id();
+    Meteor.call('logVisit', tracking, visitorId, function(err, res) {
+      //console.log('new visit', res);
       Session.set('currentVisit', res);
     });
 
   } else {
-
+      //console.log("VisitorID", Visitor.id());
+    //var visitorId = Visitor.id();
     Meteor.call('logReturnVisit', Session.get('currentVisit')._id, function(err, res) {
-      //console.log(res);
+      //console.log('return visit', res);
     });
 
   }
