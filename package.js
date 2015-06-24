@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'bigdata:visit-tracker',
+  name: 'emenoh:visit-tracker',
   summary: "Log visits for internal analytics and conversion attribution (GeoIP, UserAgent, Traffic Source)",
   version: '1.0.0',
-  git: 'https://github.com/meteorbigdata/visit-tracker.git'
+  git: 'https://github.com/emenoh/visit-tracker.git'
 });
 
 Npm.depends({
