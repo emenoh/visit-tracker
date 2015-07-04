@@ -14,42 +14,43 @@ querystring = function() {
 
 Meteor.startup(function() {
 
-  if (!Session.get('currentVisit')) {
+    if (!Session.get('currentVisit')) {
 
-    var qs, tracking;
+      var qs, tracking;
 
-    // Parse query string
-    qs = querystring();
+      // Parse query string
+      qs = querystring();
 
-    // If the url has an SID add the tracking variables
-    if (qs.sid) {
-      tracking = {
-        sid: qs.sid,
-        cmp: qs.cmp  ? qs.cmp : null,
-        s1: qs.s1 ? qs.s1 : null,
-        s2: qs.s2 ? qs.s2 : null,
-        s3: qs.s3 ? qs.s3 : null,
-        s4: qs.s4 ? qs.s4 : null,
-        s5: qs.s5 ? qs.s5 : null
-      };
+      // If the url has an SID add the tracking variables
+      if (qs.sid) {
+        tracking = {
+          sid: qs.sid,
+          cmp: qs.cmp  ? qs.cmp : null,
+          s1: qs.s1 ? qs.s1 : null,
+          s2: qs.s2 ? qs.s2 : null,
+          s3: qs.s3 ? qs.s3 : null,
+          s4: qs.s4 ? qs.s4 : null,
+          s5: qs.s5 ? qs.s5 : null
+        };
+      } else {
+        tracking = {
+          sid: VisitTracker.options.defaultSource
+        };
+      }
+
+      Meteor.call('logVisit', tracking, Meteor.userId(), function(err, res) {
+        //console.log('new visit', res);
+        Session.set('currentVisit', res);
+      });
+
     } else {
-      tracking = {
-        sid: VisitTracker.options.defaultSource
-      };
-    }
-      //console.log("VisitorID", Visitor.id());
-    var visitorId = Visitor.id();
-    Meteor.call('logVisit', tracking, visitorId, function(err, res) {
-      //console.log('new visit', res);
-      Session.set('currentVisit', res);
-    });
+        //console.log("VisitorID", Visitor.id());
+      //var visitorId = Visitor.id();
+      Meteor.call('logReturnVisit', Session.get('currentVisit')._id, function(err, res) {
+        //console.log('return visit', res);
+      });
 
-  } else {
-      //console.log("VisitorID", Visitor.id());
-    //var visitorId = Visitor.id();
-    Meteor.call('logReturnVisit', Session.get('currentVisit')._id, function(err, res) {
-      //console.log('return visit', res);
-    });
 
   }
+
 });
